@@ -1,14 +1,19 @@
 {
-  "name": "midim",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "midiamp",
+  "version": "0.0.1",
+  "description": "Basic midi noteon volume amp.",
+  "repository": "https://github.com/tuzemec/midiamp",
+  "main": "midiamp.js",
   "scripts": {
-    "test": "test"
+    "start": "node midiamp.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "tuzemec@gmail.com",
+  "license": "MIT",
   "dependencies": {
-    "easymidi": "^2.0.5"
+    "chalk": "^4.1.2",
+    "command-line-args": "^5.2.0",
+    "command-line-usage": "^6.1.1",
+    "easymidi": "^2.0.5",
+    "prompts": "^2.4.1"
   }
 }
