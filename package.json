@@ -1,7 +1,7 @@
 {
   "name": "midiamp",
   "version": "0.0.1",
-  "description": "Basic midi noteon volume amp.",
+  "description": "Basic midi noteon volume transformer.",
   "repository": "https://github.com/tuzemec/midiamp",
   "main": "midiamp.js",
   "scripts": {

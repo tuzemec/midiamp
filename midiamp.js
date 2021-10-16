@@ -18,7 +18,7 @@ const optionList = [
     description: "Minimum velocity value (default: 1)",
     alias: "m",
     type: Number,
-    defaultValue: 1,
+    defaultValue: 0,
   },
   {
     name: "max",
@@ -26,13 +26,6 @@ const optionList = [
     alias: "x",
     type: Number,
     defaultValue: 127,
-  },
-  {
-    name: "amp",
-    description: "Amplifier value (default: 10)",
-    alias: "a",
-    type: Number,
-    defaultValue: 10,
   },
   {
     name: "verbose",
@@ -43,7 +36,7 @@ const optionList = [
   {
     name: "all",
     description: "Output ALL incoming midi messages",
-    alias: "l",
+    alias: "a",
     type: Boolean,
   },
   {
@@ -79,6 +72,7 @@ Asks for device
 const usage = commandLineUsage(sections);
 const options = commandLineArgs(optionList);
 const devices = easymidi.getInputs();
+let range;
 
 async function askForDevice(message) {
   const response = await prompts({
@@ -94,20 +88,18 @@ async function askForDevice(message) {
   options.input = devices[response.device];
 }
 
-function amplify() {
+function transform() {
   const input = new easymidi.Input(options.input);
   const output = new easymidi.Output(options.name, true);
 
   input.on("message", function (msg) {
     options.all && console.log(msg);
     if (msg._type === "noteon") {
-      const velocity = Math.max(
-        options.min,
-        Math.min(msg.velocity + options.amp, 127)
-      );
-      output.send("noteon", { ...msg, velocity });
-      options.verbose &&
-        console.log("Amplifying", msg.velocity, " => ", velocity);
+      const p = Math.round((msg.velocity / 127) * 100);
+      const newVelocity = options.min + Math.round((p / 100) * range);
+
+      options.verbose && console.log(msg.velocity, " => ", newVelocity);
+      output.send("noteon", { ...msg, velocity: newVelocity });
     } else {
       output.send(msg._type, msg);
     }
@@ -128,14 +120,21 @@ function amplify() {
     );
   }
 
+  options.min = Math.max(0, options.min);
+  options.max = Math.min(127, options.max);
+
+  range = Math.abs(options.max - options.min);
+
   console.log(
-    "\nAttaching to",
-    chalk.blue(options.input),
-    "amplifying with",
-    chalk.green(options.amp)
+    `\nAttaching to ${chalk.blue(
+      options.input
+    )} with velocity range ${chalk.blue(range)} (min: ${chalk.green(
+      options.min
+    )}, max: ${chalk.green(options.max)})`
   );
+
   console.log("Opening midi port", chalk.green.bold(options.name), "\n");
   console.log(chalk.white.bold("CTRL+C"), "to exit...\n");
 
-  amplify();
+  transform();
 })();
