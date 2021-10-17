@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const easymidi = require("easymidi");
 const commandLineArgs = require("command-line-args");
 const commandLineUsage = require("command-line-usage");
@@ -18,7 +20,7 @@ const optionList = [
     description: "Minimum velocity value (default: 1)",
     alias: "m",
     type: Number,
-    defaultValue: 0,
+    defaultValue: 1,
   },
   {
     name: "max",
@@ -76,7 +78,7 @@ let range;
 
 async function askForDevice(message) {
   const response = await prompts({
-    initial: 1,
+    initial: 0,
     type: "select",
     name: "device",
     message,
@@ -112,11 +114,13 @@ function transform() {
     process.exit(0);
   }
 
-  if (!options.name || !devices.includes(options.name)) {
+  if (!options.input || !devices.includes(options.input)) {
     await askForDevice(
       options.input
-        ? `\nCan't find the specified device ${chalk.red.bold(options.input)}`
-        : "\nNo device specified, please select from the list"
+        ? `Can't find the specified device ${chalk.red.bold(
+            options.input
+          )}, select another one:`
+        : "No device specified, please select from the list:"
     );
   }
 

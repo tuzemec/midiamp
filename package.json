@@ -1,13 +1,24 @@
 {
   "name": "midiamp",
   "version": "0.0.1",
-  "description": "Basic midi noteon volume transformer.",
+  "description": "Midi velocity transformer",
+  "keywords": [
+    "midi",
+    "velocity",
+    "transformer"
+  ],
+  "homepage": "https://github.com/tuzemec/midiamp",
   "repository": "https://github.com/tuzemec/midiamp",
+  "bin": "./midiamp.js",
   "main": "midiamp.js",
   "scripts": {
     "start": "node midiamp.js"
   },
-  "author": "tuzemec@gmail.com",
+  "author": {
+    "name": "Stamen Georgiev",
+    "email": "tuzemec@gmail.com",
+    "url": "https://tuzemec.com"
+  },
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
