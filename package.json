@@ -1,6 +1,6 @@
 {
   "name": "midiamp",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Midi velocity transformer",
   "keywords": [
     "midi",
@@ -12,7 +12,8 @@
   "bin": "./midiamp.js",
   "main": "midiamp.js",
   "scripts": {
-    "start": "node midiamp.js"
+    "start": "node midiamp.js",
+    "test": "echo \"No test specified\""
   },
   "author": {
     "name": "Stamen Georgiev",
